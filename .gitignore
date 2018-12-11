@@ -1,0 +1,7 @@
+.vscode
+build
+src
+sandbox
+
+**/__pycache__
+**/*.egg-info

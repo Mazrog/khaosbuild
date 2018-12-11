@@ -1,0 +1,32 @@
+Python 3
+
+- install pip
+- install virtualenv
+$ sudo apt install python3-venv
+
+Create a source directory
+$ python3 -m venv sandbox
+# sandbox will be the directory created by virtualenv
+
+Start the virtual environment
+$ source sandbox/bin/activate
+
+Install Click
+$ pip install click
+
+Installing python-dotenv to read env files
+$ pip install python-dotenv
+
+
+Setting up environment variable
+$ export KHAOS_ROOT=/home/mazrog/khaos/
+
+
+
+
+
+
+
+cmake -DCMAKE_BUILD_TYPE=Debug /khaos/projects/amadion-template
+
+cmake --build /khaos/projects/amadion-template/build/debug --target all -- -j 2
