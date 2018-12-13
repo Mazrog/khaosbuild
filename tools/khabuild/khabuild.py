@@ -2,6 +2,7 @@ import os
 import shutil
 import click
 from subprocess import run
+from dotenv import dotenv_values
 
 import repos_utils
 from git import git
@@ -49,15 +50,20 @@ def active_repos():
 
     return src_dir.intersection(listed_dir)
 
+def active_projects():
+    src_dir = set(os.listdir(os.getenv("KHAOS_SRC")))
+    listed_dir = set([k["name"] for k in repos if k["type"] == "project"])
+
+    return src_dir.intersection(listed_dir)
+
 def get_active_repos(ctx, args, incomplete):
     actives = active_repos()
     return [ repo for repo in actives if repo.startswith(incomplete)]
 
 def get_projects(ctx, args, incomplete):
-    src_dir = set(os.listdir(os.getenv("KHAOS_SRC")))
-    listed_dir = set([k["name"] for k in repos if k["type"] == "project"])
+    projects = active_projects()
 
-    return [repo for repo in src_dir.intersection(listed_dir) if repo.startswith(incomplete)]
+    return [repo for repo in projects if repo.startswith(incomplete)]
 
 # Click commands
 
@@ -72,10 +78,16 @@ def main():
 @click.argument('project', autocompletion=get_projects)
 def configure(project):
     """
-    Configure single project
+    Configure a single project passed in argument
     """
+    if project not in active_projects():
+        with click.Context(configure) as ctx:
+            click.echo(configure.get_help(ctx))
+        return
+
     project_dep = repos_utils.get_dependencies(project)
-    cmake.configure(project_dep)
+    env = dotenv_values(os.path.join(os.getenv("KHAOS_ROOT"), "project.env"))
+    cmake.configure(project, env, project_dep)
 
 @main.command()
 def status():
@@ -95,7 +107,7 @@ def pull(repo):
     click.echo("Gathering repositories data...")
 
     if repo:
-        repo_url = utils.get_url(repos, repo)
+        repo_url = repos_utils.get_url(repos, repo)
         git.pull(repo_url, repo)
     else:
         for rep in repos:

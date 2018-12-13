@@ -1,19 +1,21 @@
 import os
 from subprocess import run
-from dotenv import dotenv_values
 
 class cmake:
     min_version = "3.5.0"
-    config = "Debug"
-    opts = { "CMAKE_BUILD_TYPE": config }
     command = "/usr/bin/cmake"
 
     @staticmethod
-    def configure(dependency_list):
+    def configure(project_name, env, dependency_list):
         root_cmake = os.path.join(os.getenv("KHAOS_SRC"), "CMakeLists.txt")
         with open(root_cmake, "w") as cmake_file:
             cmake_file.write("cmake_minimum_required ( VERSION %s FATAL_ERROR )\n" % cmake.min_version)
-            cmake_file.write("project ( KhaOS )\n\n")
+            cmake_file.write("project ( %s )\n\n" % project_name)
+
+            for var, value in env.items():
+                cmake_file.write("set ( %s \"%s\" )\n" % (var, value))
+
+            cmake_file.write("\n\n")
 
             for dep in dependency_list:
                 cmake_file.write("add_subdirectory ( %s )\n" % dep)
