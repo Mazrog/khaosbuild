@@ -11,18 +11,23 @@ $ python3 -m venv sandbox
 Start the virtual environment
 $ source sandbox/bin/activate
 
+Upgrade pip if needed
+$ pip install --upgrade pip
+
 Install Click
 $ pip install click
 
 Installing python-dotenv to read env files
 $ pip install python-dotenv
 
+Install khabuild tool
+$ pip install --editable tools/khabuild
 
-Setting up environment variable
-$ export KHAOS_ROOT=/home/mazrog/khaos/
+Install is over, you can manually deactivate the virtual env
+$ deactivate
 
-
-
+From now on, the virtual env should not be started manually, but through the help of the "khaos.env" script
+$ source khaos.env
 
 
 
