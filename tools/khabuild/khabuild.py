@@ -42,26 +42,14 @@ def build_single_repo(repo_name, clean_flag, build=True):
 # Auto-complete
 
 def get_repos(ctx, args, incomplete):
-    return [ k["name"] for k in repos if k["name"].startswith(incomplete) ]
-
-def active_repos():
-    src_dir = set(os.listdir(os.getenv("KHAOS_SRC")))
-    listed_dir = set([k["name"] for k in repos])
-
-    return src_dir.intersection(listed_dir)
-
-def active_projects():
-    src_dir = set(os.listdir(os.getenv("KHAOS_SRC")))
-    listed_dir = set([k["name"] for k in repos if k["type"] == "project"])
-
-    return src_dir.intersection(listed_dir)
+    return [ repo_name for repo_name in repos if repo_name.startswith(incomplete) ]
 
 def get_active_repos(ctx, args, incomplete):
-    actives = active_repos()
+    actives = repos_utils.active_repos()
     return [ repo for repo in actives if repo.startswith(incomplete)]
 
 def get_projects(ctx, args, incomplete):
-    projects = active_projects()
+    projects = repos_utils.active_projects()
 
     return [repo for repo in projects if repo.startswith(incomplete)]
 
@@ -80,7 +68,7 @@ def configure(project):
     """
     Configure a single project passed in argument
     """
-    if project not in active_projects():
+    if project not in repos_utils.active_projects():
         with click.Context(configure) as ctx:
             click.echo(configure.get_help(ctx))
         return
@@ -95,7 +83,7 @@ def status():
     Show git status of every repository.
     """
 
-    for repo in active_repos():
+    for repo in repos_utils.active_repos():
         git.status(repo)
 
 @main.command()
@@ -107,11 +95,11 @@ def pull(repo):
     click.echo("Gathering repositories data...")
 
     if repo:
-        repo_url = repos_utils.get_url(repos, repo)
+        repo_url = repos_utils.get_url(repo)
         git.pull(repo_url, repo)
     else:
-        for rep in repos:
-            git.pull(rep['url'], rep['name'])
+        for rep_name, repo_details in repos.items():
+            git.pull(repo_details['url'], rep_name)
 
 @main.command()
 @click.argument('repo', required=False, autocompletion=get_active_repos)
@@ -124,5 +112,5 @@ def build(repo, clean):
     if repo:
         build_single_repo(repo, clean)
     else:
-        for rep in active_repos():
+        for rep in repos_utils.active_repos():
             build_single_repo(rep, clean)
