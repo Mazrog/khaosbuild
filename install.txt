@@ -20,6 +20,9 @@ $ pip install click
 Installing python-dotenv to read env files
 $ pip install python-dotenv
 
+Install anytree (to read and create trees from repositories)
+$ pip install anytree
+
 Install khabuild tool
 $ pip install --editable tools/khabuild
 
