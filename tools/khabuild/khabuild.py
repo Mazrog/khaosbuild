@@ -42,15 +42,23 @@ def build_single_repo(repo_name, clean_flag, build=True):
 # Auto-complete
 
 def get_repos(ctx, args, incomplete):
-    return [ repo_name for repo_name in repos if repo_name.startswith(incomplete) ]
+    """
+    Autocomplete -> get repo's name from repos_list according to what has been entered.
+    """
+    return [ repo["name"] for repo in repos if repo["name"].startswith(incomplete) ]
 
 def get_active_repos(ctx, args, incomplete):
+    """
+    Autocomplete -> get repo's name from pulled repos according to what has been entered.
+    """
     actives = repos_utils.active_repos()
     return [ repo for repo in actives if repo.startswith(incomplete)]
 
 def get_projects(ctx, args, incomplete):
+    """
+    Autocomplete -> get project's name from pulled repos of projects according to what has been entered.
+    """
     projects = repos_utils.active_projects()
-
     return [repo for repo in projects if repo.startswith(incomplete)]
 
 # Click commands
@@ -98,8 +106,8 @@ def pull(repo):
         repo_url = repos_utils.get_url(repo)
         git.pull(repo_url, repo)
     else:
-        for rep_name, repo_details in repos.items():
-            git.pull(repo_details['url'], rep_name)
+        for repo in repos:
+            git.pull(repo["url"], repo["name"])
 
 @main.command()
 @click.argument('repo', required=False, autocompletion=get_active_repos)

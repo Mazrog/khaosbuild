@@ -23,11 +23,9 @@ class cmake:
             for (option, value) in env.items():
                 opt_str += ("-D%s=%s" % (option, str(value))) 
 
-            command = [cmake.command, opt_str, root_cmake]
-            print("\nRunning %s\n\n" % " ".join(command))
+            print("\nConfigured CMake with the following : %s %s\n\n" % (cmake.command, opt_str)
 
-        # run(command, cwd=wd)
-    
+
     @staticmethod
     def make(build_dir=None):
         command = [cmake.command, "--build", build_dir, "--target", "all", "--", "-j", "2"]
