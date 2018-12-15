@@ -26,14 +26,18 @@ def active_projects():
 
     return src_dir.intersection(listed_dir)
 
+def get_dependencies_dict():
+    rep_dep_dict = {} # dictionnary with (key, value) = (repo_name, repo_dependencies)
+    for repo in repos:
+        rep_dep_dict[repo["name"]] = repo["dep"]
+
+    return rep_dep_dict
 
 def get_dependencies(repo_name):
     """
     Returns a list with unique occurence of a repository dependancies.
     """
-    rep_dep_dict = {} # dictionnary with (key, value) = (repo_name, repo_dependencies)
-    for repo in repos:
-        rep_dep_dict[repo["name"]] = repo["dep"]
+    rep_dep_dict = get_dependencies_dict()
 
     dep_set = set(rep_dep_dict[repo_name])
     for dep in dep_set:

@@ -11,33 +11,16 @@ from repos_list import repos
 
 # Factorized functions
 
-def build_single_repo(repo_name, clean_flag, build=True):
-    # src_path = os.getenv("KHAOS_SRC")
+def get_config(env=None):
+    if not env:
+        env = dotenv_values(os.path.join(os.getenv("KHAOS_ROOT"), "project.env"))
 
-    # cache_dir = os.path.join(os.getenv("KHAOS_BUILD"), "cache", repo_name, cmake.config)
-    # inc_dir = os.path.join(os.getenv("KHAOS_BUILD"), "include", repo_name)
-
-    # if os.path.exists(cache_dir):
-    #     if clean_flag:
-    #         click.echo("Cleaning %s..." % repo_name)
-
-    #         for path in [ cache_dir, inc_dir ]:
-    #             try:
-    #                 click.echo("Deleting tree %s" % path)
-    #                 shutil.rmtree(path)
-    #             except FileNotFoundError:
-    #                 click.echo("Not found! Continuing...")
+    if env["CMAKE_BUILD_TYPE"] in [ "DEBUG", "RELEASE", "RELWITHDEBINFO", "MINSIZEREL" ]:
+        config = env["CMAKE_BUILD_TYPE"]
+    else:
+        config = "DEBUG"
     
-    # if not os.path.exists(cache_dir):
-    #     os.makedirs(cache_dir)
-    
-    # click.echo("Building %s..." % repo_name)
-
-    # cmake.configure(os.path.join(src_path, repo_name), wd=cache_dir)
-
-    # if build:
-    #     cmake.make(cache_dir)
-    pass
+    return config
 
 # Auto-complete
 
@@ -82,8 +65,17 @@ def configure(project):
         return
 
     project_dep = repos_utils.get_dependencies(project)
+    cmake.configure(project, project_dep)
+    click.echo("Project %s has been configured!" % project)
+
+@main.command()
+def pre_build():
+    """
+    Does some pre-build process (reloading CMake Cache)
+    """
     env = dotenv_values(os.path.join(os.getenv("KHAOS_ROOT"), "project.env"))
-    cmake.configure(project, env, project_dep)
+    config = get_config(env)
+    cmake.reload(config, env)
 
 @main.command()
 def status():
@@ -117,8 +109,27 @@ def build(repo, clean):
     Building projects
     """
 
-    if repo:
-        build_single_repo(repo, clean)
-    else:
-        for rep in repos_utils.active_repos():
-            build_single_repo(rep, clean)
+    config = get_config()
+
+    build_dir = os.path.join(os.getenv("KHAOS_BUILD"), "cache", config.title())
+
+    if clean:
+        if os.path.exists(build_dir):
+            click.echo("Cleaning %s..." % build_dir)
+
+            if repo:
+                try:
+                    repo_path = os.path.join(build_dir, repo)
+                    click.echo("Deleting tree %s" % repo_path)
+                    shutil.rmtree(repo_path)
+                except FileNotFoundError:
+                    click.echo("Not found! Continuing...")
+            else:
+                shutil.rmtree(build_dir)
+    
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+    
+    target = repo if repo else "all"
+    cmake.make(build_dir, target)
+            

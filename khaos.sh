@@ -10,7 +10,7 @@ export KHAOS_BUILD="${KHAOS_ROOT}build"
 export KHAOS_SRC="${KHAOS_ROOT}src"
 
 eval "$(_KHABUILD_COMPLETE=source khabuild)"
-alias kb="khabuild"
+eval "$(_KB_COMPLETE=source kb)"
 
 # 
 mkdir -p $KHAOS_SRC $KHAOS_BUILD
