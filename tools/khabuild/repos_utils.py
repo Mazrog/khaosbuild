@@ -39,12 +39,14 @@ def get_dependencies(repo_name):
     """
     rep_dep_dict = get_dependencies_dict()
 
-    dep_set = set(rep_dep_dict[repo_name])
-    for dep in dep_set:
+    dep_list = rep_dep_dict[repo_name]
+    for dep in dep_list:
         for sub_dep in rep_dep_dict[dep]:
+            dep_set = set(dep_list)
             dep_set.add(sub_dep)
+            dep_list = list(dep_set)
 
-    return list(dep_set)
+    return dep_list
 
 def get_dependency_tree(repo_name):
     """

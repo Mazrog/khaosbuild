@@ -22,12 +22,21 @@ repos = [
         "dep": []
     },
     {
+        "name": "loader",
+        "type": "module",
+        "url": "git@gitlab.com:khaos-serv/loader.git",
+        "dep": [
+            "importer"
+        ]
+    },
+    {
         "name": "rustoid",
         "type": "project",
         "url": "git@gitlab.com:khaos-serv/fifth-kingdom.git",
         "dep": [
             "endora",
-            "amadion"
+            "amadion",
+            "loader"
         ]
     },
 ]
