@@ -24,6 +24,8 @@ class cmake:
             for dep in dependency_list:
                 cmake_file.write("\nmessage ( \"\\nEntering repository %s...\" )\n" % dep)
                 cmake_file.write("add_subdirectory ( %s )\n" % dep)
+
+                cmake_file.write("if ( DEFINED LIBRARY_PATH )\n\tpublish_files ( %s ${LIBRARY_PATH} )\n\tunset( LIBRARY_PATH )\nendif()\n" % dep)
                 
                 sub_dep = dependencies[dep]
                 if sub_dep:

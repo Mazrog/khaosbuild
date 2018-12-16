@@ -7,22 +7,14 @@ if ( DEFINED ENV{KHAOS_BUILD} )
 
     include_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/include/${CMAKE_BUILD_TYPE}")
     link_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/lib/${CMAKE_BUILD_TYPE}")
+
+    macro(publish_files target_name path)
+        # Post-Build Step: Copy library DLL to runtime directory
+		file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/${target_name}/${path}"
+            DESTINATION "$ENV{KHAOS_BUILD}/include/${CMAKE_BUILD_TYPE}/"
+        )
+        message ( "Copying file to Runtime directory: $ENV{KHAOS_BUILD}/include/${CMAKE_BUILD_TYPE}/" )
+    endmacro(publish_files)
 else()
 	message( FATAL_ERROR "The environment variable KHAOS_BUILD is not defined!")
 endif()
-
-
-#if ( DEFINED PUBLISHED_FILES )
-#	if ( DEFINED PUBLISHED_TARGET )
-#		message( "Files to be published added!\n" )
-#
-#		# Post-Build Step: Copy library DLL to runtime directory
-#		add_custom_command(TARGET ${PUBLISHED_TARGET} POST_BUILD
-#			COMMAND ${CMAKE_COMMAND} -E copy_directory
-#			"${CMAKE_CURRENT_SOURCE_DIR}/${PUBLISHED_FILES}" "$ENV{KHAOS_BUILD}/include"
-#			COMMENT "Copying file to Runtime directory: $ENV{KHAOS_BUILD}/include"
-#		)
-#	else()
-#		message( WARNING "Some files are marked to be published, but not variable PUBLISHED_TARGET was defined..." )
-#	endif()
-#endif()

@@ -147,11 +147,19 @@ def pull(repo, ignore_dependencies):
 
 @main.command()
 @click.argument('repo', required=False, autocompletion=get_active_repos)
-@click.option('-c', '--clean', 'clean_flag', is_flag=True, help='Clean before build')
+@click.option('-c', '--clean', 'clean_flag', is_flag=True, help='Clean before build.')
 def build(repo, clean_flag):
     """
     Building projects
     """
+    if repo and repo not in repos_utils.active_repos():
+        click.echo(
+            click.style("Repository %s not in active repositories, please check for syntax or pull." % repo, fg="red"),
+            err=True
+        )
+        with click.Context(build) as ctx:
+            click.echo(build.get_help(ctx))
+        return
 
     config = get_config()
     build_dir = os.path.join(os.getenv("KHAOS_BUILD"), "cache", config.title())
