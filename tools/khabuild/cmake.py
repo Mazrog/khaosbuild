@@ -8,12 +8,12 @@ class cmake:
     command = "/usr/bin/cmake"
 
     @staticmethod
-    def configure(project_name, dependency_list):
+    def configure(project_name):
         root_cmake = os.path.join(os.getenv("KHAOS_SRC"), "CMakeLists.txt")
         common_cmake = os.path.join(os.getenv("KHAOS_ROOT"), "common.cmake")
 
         dependencies = repos_utils.get_dependencies_dict()
-        dependency_list.append(project_name)
+        dependency_list = dependencies.keys()
 
         with open(root_cmake, "w") as cmake_file:
             cmake_file.write("cmake_minimum_required ( VERSION %s FATAL_ERROR )\n" % cmake.min_version)
@@ -25,7 +25,7 @@ class cmake:
                 cmake_file.write("\nmessage ( \"\\nEntering repository %s...\" )\n" % dep)
                 cmake_file.write("add_subdirectory ( %s )\n" % dep)
 
-                cmake_file.write("if ( DEFINED LIBRARY_PATH )\n\tpublish_files ( %s ${LIBRARY_PATH} )\n\tunset( LIBRARY_PATH )\nendif()\n" % dep)
+                cmake_file.write("publish_files ( %s )\n" % dep)
                 
                 sub_dep = dependencies[dep]
                 if sub_dep:

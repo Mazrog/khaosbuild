@@ -102,8 +102,7 @@ def configure(project):
             click.echo(configure.get_help(ctx))
         return
 
-    project_dep = repos_utils.get_dependencies(project)
-    cmake.configure(project, project_dep)
+    cmake.configure(project)
     click.echo("Project %s has been configured!" % project)
 
 @main.command()
@@ -169,4 +168,3 @@ def build(repo, clean_flag):
     
     target = repo if repo else "all"
     cmake.make(build_dir, target)
-            
