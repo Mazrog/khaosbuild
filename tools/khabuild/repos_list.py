@@ -4,13 +4,13 @@ repos = [
     {
         "name": "endora",
         "type": "module",
-        "url": "git@github.com:Mazrog/endora.git",
+        "url": "git@gitlab.com:khaos-serv/endora.git",
         "dep": []
     },
     {
         "name": "amadion",
         "type": "module",
-        "url": "git@gitlab.com:Khabooh/amadion-template.git",
+        "url": "git@gitlab.com:khaos-serv/amadion.git",
         "dep": [
             "endora"
         ]
