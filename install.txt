@@ -1,4 +1,11 @@
-Python 3
+Install TXT
+===========
+
+You can launch the install.sh script directly, that will go through required steps to setup the environment, or do it manually by following the instructions below.
+
+Manual:
+---
+Tools are developped with python 3.
 
 - install pip
 - install virtualenv
@@ -20,9 +27,6 @@ $ pip install click
 Installing python-dotenv to read env files
 $ pip install python-dotenv
 
-Install anytree (to read and create trees from repositories)
-$ pip install anytree
-
 Install khabuild tool
 $ pip install --editable tools/khabuild
 
@@ -30,11 +34,4 @@ Install is over, you can manually deactivate the virtual env
 $ deactivate
 
 From now on, the virtual env should not be started manually, but through the help of the "khaos.env" script
-$ source khaos.env
-
-
-
-
-cmake -DCMAKE_BUILD_TYPE=Debug /khaos/projects/amadion-template
-
-cmake --build /khaos/projects/amadion-template/build/debug --target all -- -j 2
+$ source khaos.sh
