@@ -1,12 +1,12 @@
 message( "\nCommon CMake for KhaOS Studio build system" )
 
 if ( DEFINED ENV{KHAOS_BUILD} )
-    set ( CMAKE_LIBRARY_OUTPUT_DIRECTORY "$ENV{KHAOS_BUILD}/lib" )
-    set ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY "$ENV{KHAOS_BUILD}/lib" )
-    set ( CMAKE_RUNTIME_OUTPUT_DIRECTORY "$ENV{KHAOS_BUILD}/bin" )
+    set ( CMAKE_LIBRARY_OUTPUT_DIRECTORY "$ENV{KHAOS_BUILD}/lib/${CMAKE_BUILD_TYPE}" )
+    set ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY "$ENV{KHAOS_BUILD}/lib/${CMAKE_BUILD_TYPE}" )
+    set ( CMAKE_RUNTIME_OUTPUT_DIRECTORY "$ENV{KHAOS_BUILD}/bin/${CMAKE_BUILD_TYPE}" )
 
-    include_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/include")
-    link_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/lib")
+    include_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/include/${CMAKE_BUILD_TYPE}")
+    link_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/lib/${CMAKE_BUILD_TYPE}")
 else()
 	message( FATAL_ERROR "The environment variable KHAOS_BUILD is not defined!")
 endif()
