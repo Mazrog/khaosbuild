@@ -92,18 +92,14 @@ def clean():
     build_config_tree()
 
 @main.command()
-@click.argument('project', autocompletion=get_projects)
-def configure(project):
+@click.argument('repo', autocompletion=get_active_repos)
+def configure(repo):
     """
-    Configure a single project passed in argument
+    Configure a single repository passed in argument
     """
-    if project not in repos_utils.active_projects():
-        with click.Context(configure) as ctx:
-            click.echo(configure.get_help(ctx))
-        return
 
-    cmake.configure(project)
-    click.echo("Project %s has been configured!" % project)
+    cmake.configure(repo)
+    click.echo("Project %s has been configured!" % repo)
 
 @main.command()
 def pre_build():

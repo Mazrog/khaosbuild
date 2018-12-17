@@ -47,9 +47,3 @@ def get_dependencies(repo_name):
             dep_list = list(dep_set)
 
     return dep_list
-
-def get_dependency_tree(repo_name):
-    """
-    Returns a list sorted children to ancestors from the repository tree structure with root repo_name.
-    """
-    pass
