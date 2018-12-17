@@ -13,7 +13,7 @@ class cmake:
         common_cmake = os.path.join(os.getenv("KHAOS_ROOT"), "common.cmake")
 
         dependencies = repos_utils.get_dependencies_dict()
-        dependency_list = dependencies[project_name] + [ project_name ]
+        dependency_list = repos_utils.get_dependencies(project_name) + [ project_name ]
 
         with open(root_cmake, "w") as cmake_file:
             cmake_file.write("cmake_minimum_required ( VERSION %s FATAL_ERROR )\n" % cmake.min_version)

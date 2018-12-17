@@ -9,13 +9,13 @@ if ( DEFINED ENV{KHAOS_BUILD} )
     link_directories(BEFORE SYSTEM "$ENV{KHAOS_BUILD}/lib/${CMAKE_BUILD_TYPE}")
 
     macro(publish_files target_name)
-        if ( DEFINED LIBRARY_PATH )
+        if ( DEFINED PUBLISHED_FILES )
             # Post-Build Step: Copy library DLL to runtime directory
-            file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/${target_name}/${LIBRARY_PATH}"
+            file( COPY "${CMAKE_CURRENT_SOURCE_DIR}/${target_name}/${PUBLISHED_FILES}"
                 DESTINATION "$ENV{KHAOS_BUILD}/include/${CMAKE_BUILD_TYPE}/"
             )
             message ( "Copying file to Runtime directory: $ENV{KHAOS_BUILD}/include/${CMAKE_BUILD_TYPE}/" )
-            unset( LIBRARY_PATH )
+            unset( PUBLISHED_FILES )
         endif()
     endmacro(publish_files)
 else()
