@@ -34,4 +34,4 @@ Install is over, you can manually deactivate the virtual env
 $ deactivate
 
 From now on, the virtual env should not be started manually, but through the help of the "khaos.env" script
-$ source khaos.sh
+$ source shell.sh

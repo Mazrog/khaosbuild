@@ -15,7 +15,7 @@ def get_config(env=None):
     if not env:
         env = dotenv_values(os.path.join(os.getenv("KHAOS_ROOT"), "project.env"))
 
-    if env["CMAKE_BUILD_TYPE"] in [ "DEBUG", "RELEASE", "RELWITHDEBINFO", "MINSIZEREL" ]:
+    if env and env["CMAKE_BUILD_TYPE"].capitalize() in [ "DEBUG", "RELEASE", "RELWITHDEBINFO", "MINSIZEREL" ]:
         config = env["CMAKE_BUILD_TYPE"]
     else:
         config = "DEBUG"
@@ -57,13 +57,6 @@ def get_active_repos(ctx, args, incomplete):
     actives = repos_utils.active_repos()
     return [ repo for repo in actives if repo.startswith(incomplete)]
 
-def get_projects(ctx, args, incomplete):
-    """
-    Autocomplete -> get project's name from pulled repos of projects according to what has been entered.
-    """
-    projects = repos_utils.active_projects()
-    return [repo for repo in projects if repo.startswith(incomplete)]
-
 # Click commands
 
 @click.group()
@@ -104,7 +97,7 @@ def configure(repo):
 @main.command()
 def pre_build():
     """
-    Does some pre-build process (reloading CMake Cache)
+    Does some pre-build process (reloading CMake Cache for most)
     """
     env = dotenv_values(os.path.join(os.getenv("KHAOS_ROOT"), "project.env"))
     config = get_config(env)

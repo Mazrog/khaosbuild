@@ -1,6 +1,7 @@
 #!/bin/bash
 
-KHAOS_ROOT="/home/mazrog/khaos/"
+# Do not forget the slash at the end
+KHAOS_ROOT="/mnt/d/prog/python/khaosbuild/"
 
 cd $KHAOS_ROOT
 source sandbox/bin/activate

@@ -13,9 +13,11 @@ source sandbox/bin/activate
 pip install --upgrade pip
 pip install click python-dotenv
 
-pip install --editable tools/khabuild
+# Editable is for dev purposes
+# pip install --editable tools/khabuild
+pip install tools/khabuild
 
 deactivate
 
 echo "Finished! Starting shell..."
-source khaos.sh
+source shell.sh

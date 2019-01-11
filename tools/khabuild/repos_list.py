@@ -1,42 +1,12 @@
 # This file will list all different repositories with dependancies
 
-repos = [
-    {
-        "name": "endora",
-        "type": "module",
-        "url": "git@gitlab.com:khaos-serv/endora.git",
-        "dep": []
-    },
-    {
-        "name": "amadion",
-        "type": "module",
-        "url": "git@gitlab.com:khaos-serv/amadion.git",
-        "dep": [
-            "endora"
-        ]
-    },
-    {
-        "name": "importer",
-        "type": "module",
-        "url": "git@gitlab.com:khaos-serv/importer.git",
-        "dep": []
-    },
-    {
-        "name": "loader",
-        "type": "module",
-        "url": "git@gitlab.com:khaos-serv/loader.git",
-        "dep": [
-            "importer"
-        ]
-    },
-    {
-        "name": "rustoid",
-        "type": "project",
-        "url": "git@gitlab.com:khaos-serv/fifth-kingdom.git",
-        "dep": [
-            "endora",
-            "amadion",
-            "loader"
-        ]
-    },
-]
+# Typical use 
+# repos = [
+#     {
+#         "name": your project's name as it will appear for the CLI application
+#         "url": git or https url for the project (used when pulling)
+#         "dep": list of project's name needed as dependancies to build this one
+#     }
+# ]
+
+repos = []
